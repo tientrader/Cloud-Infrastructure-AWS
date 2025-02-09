@@ -18,15 +18,16 @@ This project aims to deploy and manage containerized applications on AWS using A
   Provides secure internet access for private subnets, associated with an Elastic IP in `container_public_az1`.
 
 - **Route Tables**:
+
   - **Public Route Table**: Routes traffic from public subnets to the internet via IGW.
   - **Private Route Table**: Routes traffic from private subnets to the internet via NGW.
+
+- **Network ACLs (NACLs)**:  
+  Configured to manage inbound and outbound traffic across subnets, ensuring robust security across the environment.
 
 - **Security Groups (SGs)**:
   - **container_public_sg**: Allows inbound HTTP (80), HTTPS (443), and application-specific port (8080) traffic.
   - **container_private_sg**: Restricts access to private subnets, only allowing traffic originating from the Application Load Balancer (ALB).
-
-- **Network ACLs (NACLs)**:  
-  Configured to manage inbound and outbound traffic across subnets, ensuring robust security across the environment.
 
 ### Compute & Container Orchestration
 
@@ -48,10 +49,12 @@ This project aims to deploy and manage containerized applications on AWS using A
 ### Deployment & Scaling
 
 - **Task Definitions**:
+
   - `order-ec2-td`: Task definition for EC2-based deployments, using the `awsvpc` networking mode.
   - `user-fargate-td`: Task definition for Fargate-based deployments, also using the `awsvpc` networking mode.
 
 - **ECS Services**:
+
   - **`order-svc`**: Runs on EC2 instances using the `order-ec2-td` task definition, deployed in private subnets behind an ALB.
   - **`user-svc`**: Runs on AWS Fargate using the `user-fargate-td` task definition, deployed in private subnets behind an ALB.
 
@@ -72,14 +75,15 @@ This project aims to deploy and manage containerized applications on AWS using A
 ## Application Access
 
 - **Main URL**:  
-  Access the application via the following URLs:  
-  - [https://ecs-alb.tienaws.click/](https://ecs-alb.tienaws.click/)  
-  - [https://ecs-alb.tienaws.click/user](https://ecs-alb.tienaws.click/user)  
+  Access the application via the following URLs:
+  - [https://ecs-alb.tienaws.click/](https://ecs-alb.tienaws.click/)
+  - [https://ecs-alb.tienaws.click/user](https://ecs-alb.tienaws.click/user)
   - [https://ecs-alb.tienaws.click/order](https://ecs-alb.tienaws.click/order)
 
 ## Benefits & Conclusion
 
 This project delivers a resilient, scalable, and secure environment for deploying containerized applications on AWS. By leveraging key AWS services such as ECS, Fargate, EC2, ALB, Route 53, and ACM, the solution ensures:
+
 - **High availability**: With automatic scaling and load balancing, the infrastructure adapts to traffic fluctuations.
 - **Security**: With VPC isolation, security groups, and HTTPS, the application is protected from unauthorized access.
 - **Cost efficiency**: Using Fargate for serverless compute and EC2 for cost-effective scaling, the solution optimizes infrastructure costs while maintaining performance.
