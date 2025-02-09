@@ -95,3 +95,5 @@ This project aims to deploy and manage containerized applications on AWS using A
   - [https://ecs-alb.tienaws.click/](https://ecs-alb.tienaws.click/)
   - [https://ecs-alb.tienaws.click/user](https://ecs-alb.tienaws.click/user)
   - [https://ecs-alb.tienaws.click/order](https://ecs-alb.tienaws.click/order)
+ 
+    ![user](resources/user-service.png)
