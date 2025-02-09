@@ -83,8 +83,8 @@ This project aims to deploy and manage containerized applications on AWS using A
 
   ![route-53](resources/route-53.png)
 
-- **AWS Certificate Manager (ACM)**:  
-  Provides SSL certificates for securing HTTPS traffic. HTTP requests are automatically redirected to HTTPS using a listener rule on the ALB, ensuring secure communication.
+- **AWS Certificate Manager (ACM)**:
+  Provides SSL/TLS certificate for securing HTTPS traffic. HTTP requests are automatically redirected to HTTPS using a listener rule on the ALB, ensuring secure communication.
 
   ![acm](resources/acm.png)
   
