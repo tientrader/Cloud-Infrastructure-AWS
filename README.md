@@ -10,7 +10,7 @@ This project aims to deploy and manage containerized applications on AWS using A
 
 ### 🧱 Infrastructure & Networking
 
-- **Amazon VPC (Virtual Private Cloud)**:  
+- <img src="https://i.imgur.com/FNOLEI9.jpeg" width="30" height="30" /> **Amazon VPC (Virtual Private Cloud)**:  
   A custom VPC (`container_vpc`) with six subnets, including public, private, and database subnets, designed to isolate workloads for enhanced security.
 
 - **Internet Gateway (IGW)**:  
@@ -35,22 +35,22 @@ This project aims to deploy and manage containerized applications on AWS using A
  
   ![sg](resources/sg.png)
 
-### 🐳 Compute & Container Orchestration
+### 🖥️ Compute & Container Orchestration
 
-- **Amazon ECS Cluster (`tienaws-ecs`)**:  
+- <img src="https://i.imgur.com/SWw2HAB.png" width="30" height="30" /> **Amazon ECS Cluster (`tienaws-ecs`)**:  
   Manages containerized workloads and tasks across EC2 and Fargate launch types.
 
-- **AWS Fargate**:  
+- <img src="https://i.imgur.com/WZPqH1T.png" width="30" height="30" /> **AWS Fargate**:  
   A serverless compute engine that abstracts infrastructure management, allowing ECS tasks to be run without the need for provisioning servers.
 
-- **EC2 Instance**:  
+- <img src="https://i.imgur.com/9AUocjJ.png" width="30" height="30" /> **EC2 Instance**:  
   ECS-optimized Amazon Linux 2 instance (`t2.micro`), used to support EC2-based ECS deployments.
 
-- **Docker**:  
-  Container runtime used to run containerized applications within ECS tasks.
-
-- **ECR**:  
+- <img src="https://i.imgur.com/4rPiNGc.png" width="30" height="30" /> **ECR**:  
   A fully managed Docker container registry where images used by ECS tasks are stored.
+
+- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" alt="Docker" width="30" height="30"/> **Docker**:  
+  Container runtime used to run containerized applications within ECS tasks.
 
   ![ecr](resources/ecr.png)
 
@@ -73,17 +73,17 @@ This project aims to deploy and manage containerized applications on AWS using A
 
 ### ⚖️ Load Balancing & DNS
 
-- **Application Load Balancer (ALB) (`ecs-alb`)**:  
+- <img src="https://i.imgur.com/GMr01eh.png" width="30" height="30" /> **Application Load Balancer (ALB) (`ecs-alb`)**:  
   Manages HTTP/HTTPS traffic and distributes it to ECS services based on defined routing rules. The ALB is configured with two listeners: port 80 for HTTP and port 443 for HTTPS. Target Groups (`alb-tg-default`, `order-svc`, `user-svc`) route traffic to appropriate services based on path patterns.
 
   ![alb](resources/alb.png)
 
-- **AWS Route 53**:  
+- <img src="https://i.imgur.com/CHzMALx.png" width="30" height="30" /> **AWS Route 53**:  
   The DNS service is configured with a custom domain (`tienaws.click`). The ALB is mapped to `ecs-alb.tienaws.click` via an A record for DNS resolution, ensuring seamless access to the application.
 
   ![route-53](resources/route-53.png)
 
-- **AWS Certificate Manager (ACM)**:
+- <img src="https://i.imgur.com/s1HtY0n.png" width="30" height="30" /> **AWS Certificate Manager (ACM)**:
   Provides SSL/TLS certificate for securing HTTPS traffic. HTTP requests are automatically redirected to HTTPS using a listener rule on the ALB, ensuring secure communication.
 
   ![acm](resources/acm.png)
@@ -91,7 +91,8 @@ This project aims to deploy and manage containerized applications on AWS using A
 ## 🌐 Application Access
 
 - **Main URL**:
-  Access the application via the following URLs:
+  ❗❗The application is currently unavailable as the services have been stopped to prevent additional costs.
+
   - [https://ecs-alb.tienaws.click/](https://ecs-alb.tienaws.click/)
   - [https://ecs-alb.tienaws.click/user](https://ecs-alb.tienaws.click/user)
   - [https://ecs-alb.tienaws.click/order](https://ecs-alb.tienaws.click/order)
