@@ -93,11 +93,7 @@ This project aims to deploy and manage containerized applications on AWS using A
 ## 🌐 Application Access
 
 - **Main URL**:
-<<<<<<< HEAD
   ❗❗The application is currently unavailable as the services have been stopped to prevent additional costs.
-=======
-  Access the application via the following URLs:
->>>>>>> a3e94b5 (refactor)
 
   - [https://ecs-alb.tienaws.click/](https://ecs-alb.tienaws.click/)
   - [https://ecs-alb.tienaws.click/user](https://ecs-alb.tienaws.click/user)
