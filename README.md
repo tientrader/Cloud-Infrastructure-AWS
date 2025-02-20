@@ -4,7 +4,7 @@
 
 This project aims to deploy and manage containerized applications on AWS using Amazon ECS (Elastic Container Service). The solution supports both EC2 and Fargate launch types, providing a highly scalable, secure, and automated cloud deployment model that adheres to AWS best practices. The infrastructure leverages key AWS services including VPC, Subnets, Internet Gateway, NAT Gateway, Application Load Balancer (ALB), Security Groups, ECS Clusters, Task Definitions, and Auto Scaling. Additionally, the project integrates AWS Route 53 and ACM for secure HTTPS access.
 
-  ![overview](resources/overview.png)
+![overview](resources/overview.png)
 
 ## 🏗 Architecture & Technologies
 
@@ -30,9 +30,10 @@ This project aims to deploy and manage containerized applications on AWS using A
   ![vpc](resources/vpc.png)
 
 - **Security Groups (SGs)**:
+
   - **container_public_sg**: Allows inbound HTTP (80), HTTPS (443), and application-specific port (8080) traffic.
   - **container_private_sg**: Restricts access to private subnets, only allowing traffic originating from the Application Load Balancer (ALB).
- 
+
   ![sg](resources/sg.png)
 
 ### 🖥️ Compute & Container Orchestration
@@ -67,8 +68,9 @@ This project aims to deploy and manage containerized applications on AWS using A
   - **`user-svc`**: Runs on AWS Fargate using the `user-fargate-td` task definition, deployed in private subnets behind an ALB.
 
 - **Auto Scaling**:
+
   - Configured with a minimum of 1 and a maximum of 5 tasks, using the `ALBRequestCountPerTarget` metric for scaling based on incoming traffic.
- 
+
   ![services](resources/services.png)
 
 ### ⚖️ Load Balancing & DNS
@@ -87,14 +89,18 @@ This project aims to deploy and manage containerized applications on AWS using A
   Provides SSL/TLS certificate for securing HTTPS traffic. HTTP requests are automatically redirected to HTTPS using a listener rule on the ALB, ensuring secure communication.
 
   ![acm](resources/acm.png)
-  
+
 ## 🌐 Application Access
 
 - **Main URL**:
+<<<<<<< HEAD
   ❗❗The application is currently unavailable as the services have been stopped to prevent additional costs.
+=======
+  Access the application via the following URLs:
+>>>>>>> a3e94b5 (refactor)
 
   - [https://ecs-alb.tienaws.click/](https://ecs-alb.tienaws.click/)
   - [https://ecs-alb.tienaws.click/user](https://ecs-alb.tienaws.click/user)
   - [https://ecs-alb.tienaws.click/order](https://ecs-alb.tienaws.click/order)
- 
+
     ![user](resources/user-service.png)
