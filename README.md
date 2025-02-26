@@ -48,7 +48,7 @@ This project aims to deploy and manage containerized applications on AWS using A
   ECS-optimized Amazon Linux 2 instance (`t2.micro`), used to support EC2-based ECS deployments.
 
 - <img src="https://i.imgur.com/4rPiNGc.png" width="30" height="30" /> **ECR**:  
-  A fully managed Docker container registry where images used by ECS tasks are stored.
+  A fully managed **private** Docker container registry where images used by ECS tasks are securely stored and versioned.
 
 - <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" alt="Docker" width="30" height="30"/> **Docker**:  
   Container runtime used to run containerized applications within ECS tasks.
