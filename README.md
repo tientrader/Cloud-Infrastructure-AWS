@@ -75,10 +75,14 @@ This project aims to deploy and manage containerized applications on AWS using A
 
 ### ⚖️ Load Balancing & DNS
 
-- <img src="https://i.imgur.com/GMr01eh.png" width="30" height="30" /> **Application Load Balancer (ALB) (`ecs-alb`)**:  
+- <img src="https://i.imgur.com/GMr01eh.png" width="30" height="30" /> **Application Load Balancer (ALB)**:  
   Manages HTTP/HTTPS traffic and distributes it to ECS services based on defined routing rules. The ALB is configured with two listeners: port 80 for HTTP and port 443 for HTTPS. Target Groups (`alb-tg-default`, `order-svc`, `user-svc`) route traffic to appropriate services based on path patterns.
 
   ![alb](resources/alb.png)
+
+- <img src="https://i.imgur.com/jFcQvRW.png" width="30" height="30" /> **AWS Web Application Firewall (WAF)**: Protects the application from common web threats, such as **SQL Injection (SQLi)** and **Cross-Site Scripting (XSS)**. Integrated with **Application Load Balancer**, AWS WAF filters and blocks malicious traffic based on defined security rules.
+
+  ![alb](resources/waf.png)
 
 - <img src="https://i.imgur.com/CHzMALx.png" width="30" height="30" /> **AWS Route 53**:  
   The DNS service is configured with a custom domain (`tienaws.click`). The ALB is mapped to `ecs-alb.tienaws.click` via an A record for DNS resolution, ensuring seamless access to the application.
@@ -95,8 +99,8 @@ This project aims to deploy and manage containerized applications on AWS using A
 - **Main URL**:
   ❗❗The application is currently unavailable as the services have been stopped to prevent additional costs.
 
-  - [https://ecs-alb.tienaws.click/](https://ecs-alb.tienaws.click/)
-  - [https://ecs-alb.tienaws.click/user](https://ecs-alb.tienaws.click/user)
-  - [https://ecs-alb.tienaws.click/order](https://ecs-alb.tienaws.click/order)
+  - [https://www.tienaws.click/](https://ecs-alb.tienaws.click/)
+  - [https://www.tienaws.click/user](https://ecs-alb.tienaws.click/user)
+  - [https://www.tienaws.click/order](https://ecs-alb.tienaws.click/order)
 
     ![user](resources/user-service.png)
