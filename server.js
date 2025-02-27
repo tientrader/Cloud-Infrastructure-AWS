@@ -9,7 +9,7 @@ const HOST = '0.0.0.0';
 const app = express();
 app.get('/', (req, res) => {
   res.send(
-    `<body style='background-color:#283E5B'><h1 style='color: orange;text-align:center'>Hello, I'm Truong Nhat Tien v1.1</h1></body>`
+    `<body style='background-color:#283E5B'><h1 style='color: orange;text-align:center'>Hello, I'm Truong Nhat Tien v1.2</h1></body>`
   );
 });
 
