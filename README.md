@@ -1,6 +1,6 @@
 # 📌 Cloud Infrastructure & Deployment with AWS ECS
 
-## 📝 Project Overview
+## 🚨 Project Overview
 
 ![overview](resources/overview.png)
 
