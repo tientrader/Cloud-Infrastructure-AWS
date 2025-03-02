@@ -1,6 +1,6 @@
 # 📌 Cloud Infrastructure & Deployment with AWS ECS
 
-## 📝 Project Overview
+## 🚨 Project Overview
 
 ![overview](resources/overview.png)
 
@@ -48,7 +48,7 @@
 
 ---
 
-### 🖥️ Container Orchestration
+### 🚀 Container Orchestration
 
 - <img src="https://i.imgur.com/SWw2HAB.png" width="30" height="30" /> **Elastic Container Service (ACM)**: A fully managed container orchestration service that simplifies the deployment, scaling, and management of containerized applications.
 - <img src="https://i.imgur.com/WZPqH1T.png" width="30" height="30" /> **Serverless Compute Engine (Fargate)**: Eliminates the need for server provisioning, allowing automatic scaling and resource optimization.
