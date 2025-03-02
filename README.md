@@ -1,106 +1,152 @@
-# 📌 Cloud Application Deployment with AWS ECS
+# 📌 Cloud Infrastructure & Deployment with AWS ECS
 
 ## 📝 Project Overview
 
-This project aims to deploy and manage containerized applications on AWS using Amazon ECS (Elastic Container Service). The solution supports both EC2 and Fargate launch types, providing a highly scalable, secure, and automated cloud deployment model that adheres to AWS best practices. The infrastructure leverages key AWS services including VPC, Subnets, Internet Gateway, NAT Gateway, Application Load Balancer (ALB), Security Groups, ECS Clusters, Task Definitions, and Auto Scaling. Additionally, the project integrates AWS Route 53 and ACM for secure HTTPS access.
-
 ![overview](resources/overview.png)
+
+---
 
 ## 🏗 Architecture & Technologies
 
 ### 🧱 Infrastructure & Networking
 
-- <img src="https://i.imgur.com/FNOLEI9.jpeg" width="30" height="30" /> **Amazon VPC (Virtual Private Cloud)**:  
-  A custom VPC (`container_vpc`) with six subnets, including public, private, and database subnets, designed to isolate workloads for enhanced security.
-
-- **Internet Gateway (IGW)**:  
-  Enables access to public resources from the internet, attached to `container_vpc`.
-
-- **NAT Gateway (NGW)**:  
-  Provides secure internet access for private subnets, associated with an Elastic IP in `container_public_az1`.
-
+- <img src="https://i.imgur.com/FNOLEI9.jpeg" width="30" height="30" /> **Virtual Private Cloud (VPC)**: A custom network setup with multiple subnets, including public, private, and database subnets, ensuring workload isolation and security.
+- **Internet Gateway (IGW)**: Allows access to public resources from the internet, attached to the VPC.
+- **NAT Gateway (NGW)**: Provides secure internet access for private subnets, associated with an Elastic IP.
 - **Route Tables**:
-
-  - **Public Route Table**: Routes traffic from public subnets to the internet via IGW.
-  - **Private Route Table**: Routes traffic from private subnets to the internet via NGW.
-
-- **Network ACLs (NACLs)**:  
-  Configured to manage inbound and outbound traffic across subnets, ensuring robust security across the environment.
-
-  ![vpc](resources/vpc.png)
-
+  - Public route table directs traffic to the internet via IGW.
+  - Private route table routes traffic via NGW.
+- **Network ACLs (NACLs)**: Manages inbound and outbound traffic across subnets to enhance security.
 - **Security Groups (SGs)**:
+  - Public security group allows HTTP, HTTPS, and application-specific traffic.
+  - Private security group restricts access, permitting only traffic from the load balancer.
 
-  - **container_public_sg**: Allows inbound HTTP (80), HTTPS (443), and application-specific port (8080) traffic.
-  - **container_private_sg**: Restricts access to private subnets, only allowing traffic originating from the Application Load Balancer (ALB).
+![vpc](resources/vpc.png)
 
-  ![sg](resources/sg.png)
-
-### 🖥️ Compute & Container Orchestration
-
-- <img src="https://i.imgur.com/SWw2HAB.png" width="30" height="30" /> **Amazon ECS Cluster (`tienaws-ecs`)**:  
-  Manages containerized workloads and tasks across EC2 and Fargate launch types.
-
-- <img src="https://i.imgur.com/WZPqH1T.png" width="30" height="30" /> **AWS Fargate**:  
-  A serverless compute engine that abstracts infrastructure management, allowing ECS tasks to be run without the need for provisioning servers.
-
-- <img src="https://i.imgur.com/9AUocjJ.png" width="30" height="30" /> **EC2 Instance**:  
-  ECS-optimized Amazon Linux 2 instance (`t2.micro`), used to support EC2-based ECS deployments.
-
-- <img src="https://i.imgur.com/4rPiNGc.png" width="30" height="30" /> **ECR**:  
-  A fully managed **private** Docker container registry where images used by ECS tasks are securely stored and versioned.
-
-- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" alt="Docker" width="30" height="30"/> **Docker**:  
-  Container runtime used to run containerized applications within ECS tasks.
-
-  ![ecr](resources/ecr.png)
-
-### 💸 Deployment & Scaling
-
-- **Task Definitions**:
-
-  - `order-ec2-td`: Task definition for EC2-based deployments, using the `awsvpc` networking mode.
-  - `user-fargate-td`: Task definition for Fargate-based deployments, also using the `awsvpc` networking mode.
-
-- **ECS Services**:
-
-  - **`order-svc`**: Runs on EC2 instances using the `order-ec2-td` task definition, deployed in private subnets behind an ALB.
-  - **`user-svc`**: Runs on AWS Fargate using the `user-fargate-td` task definition, deployed in private subnets behind an ALB.
-
-- **Auto Scaling**:
-
-  - Configured with a minimum of 1 and a maximum of 5 tasks, using the `ALBRequestCountPerTarget` metric for scaling based on incoming traffic.
-
-  ![services](resources/services.png)
+---
 
 ### ⚖️ Load Balancing & DNS
 
-- <img src="https://i.imgur.com/GMr01eh.png" width="30" height="30" /> **Application Load Balancer (ALB)**:  
-  Manages HTTP/HTTPS traffic and distributes it to ECS services based on defined routing rules. The ALB is configured with two listeners: port 80 for HTTP and port 443 for HTTPS. Target Groups (`alb-tg-default`, `order-svc`, `user-svc`) route traffic to appropriate services based on path patterns.
+- <img src="https://i.imgur.com/GMr01eh.png" width="30" height="30" /> **Application Load Balancer (ALB)**: Manages HTTP/HTTPS traffic and distributes it to services based on routing rules.
 
-  ![alb](resources/alb.png)
+![alb](resources/alb.png)
 
-- <img src="https://i.imgur.com/jFcQvRW.png" width="30" height="30" /> **AWS Web Application Firewall (WAF)**: Protects the application from common web threats, such as **SQL Injection (SQLi)** and **Cross-Site Scripting (XSS)**. Integrated with **Application Load Balancer**, AWS WAF filters and blocks malicious traffic based on defined security rules.
+- <img src="https://i.imgur.com/jFcQvRW.png" width="30" height="30" /> **Web Application Firewall (WAF)**: Protects against common security threats, including SQL Injection (SQLi) and Cross-Site Scripting (XSS).
 
-  ![alb](resources/waf.png)
+  - DEV
+    ![waf-dev](resources/waf-dev.png)
+  - PROD
+    ![waf-prod](resources/waf-prod.png)
 
-- <img src="https://i.imgur.com/CHzMALx.png" width="30" height="30" /> **AWS Route 53**:  
-  The DNS service is configured with a custom domain (`tienaws.click`). The ALB is mapped to `ecs-alb.tienaws.click` via an A record for DNS resolution, ensuring seamless access to the application.
+- <img src="https://i.imgur.com/CHzMALx.png" width="30" height="30" /> **Amazon Route 53**: Routes domain traffic to the appropriate endpoints.
 
-  ![route-53](resources/route-53.png)
+![route-53](resources/route-53.png)
 
-- <img src="https://i.imgur.com/s1HtY0n.png" width="30" height="30" /> **AWS Certificate Manager (ACM)**:
-  Provides SSL/TLS certificate for securing HTTPS traffic. HTTP requests are automatically redirected to HTTPS using a listener rule on the ALB, ensuring secure communication.
+- <img src="https://i.imgur.com/s1HtY0n.png" width="30" height="30" /> **Certificate Manager (ACM)**: Provides SSL/TLS certificates to ensure secure communication over HTTPS.
 
-  ![acm](resources/acm.png)
+![acm](resources/acm.png)
 
-## 🌐 Application Access
+---
 
-- **Main URL**:
-  ❗❗The application is currently unavailable as the services have been stopped to prevent additional costs.
+### 🖥️ Container Orchestration
 
-  - [https://www.tienaws.click/](https://ecs-alb.tienaws.click/)
-  - [https://www.tienaws.click/user](https://ecs-alb.tienaws.click/user)
-  - [https://www.tienaws.click/order](https://ecs-alb.tienaws.click/order)
+- <img src="https://i.imgur.com/SWw2HAB.png" width="30" height="30" /> **Elastic Container Service (ACM)**: A fully managed container orchestration service that simplifies the deployment, scaling, and management of containerized applications.
+- <img src="https://i.imgur.com/WZPqH1T.png" width="30" height="30" /> **Serverless Compute Engine (Fargate)**: Eliminates the need for server provisioning, allowing automatic scaling and resource optimization.
 
-    ![user](resources/user-service.png)
+  - DEV
+    ![dev-cluster](resources/dev-cluster.png)
+  - PROD
+    ![prod-cluster](resources/prod-cluster.png)
+
+---
+
+## ♻️ CI/CD Pipeline
+
+This CI/CD pipeline is built using **AWS DevOps Services**, ensuring efficient and automated deployment. It leverages:
+
+- <img src="https://i.imgur.com/4Ztfkdb.png" width="30" height="30" /> **AWS CodePipeline** for continuous integration and deployment automation.
+- <img src="https://i.imgur.com/upNyo8b.png" width="30" height="30" /> **AWS CodeBuild** for compiling, packaging, and containerizing applications.
+- <img src="https://i.imgur.com/MmcSYIE.png" width="30" height="30" /> **AWS CodeDeploy** for automated and zero-downtime deployments.
+- <img src="https://i.imgur.com/EVxxE9V.png" width="30" height="30" /> **Amazon SNS** for deployment approval notifications and alerts.
+
+![pipeline](resources/pipeline.png)
+
+- <img src="https://i.imgur.com/4rPiNGc.png" width="30" height="30" /> **Amazon ECR** for secure container image storage.
+- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" alt="Docker" width="30" height="30"/> **Docker** for containerization and efficient deployment.
+
+![ecr](resources/ecr.png)
+
+---
+
+### ⚙️ Build & Deployment Stages
+
+1. **Code Commit & Build**
+
+- Developers push code to the **GitHub repository**.
+- AWS **CodePipeline** detects the changes and triggers the **CodeBuild** process.
+- The application is compiled, packaged, and containerized.
+- The built image is pushed to **ECR** for deployment.
+
+  ![build](resources/build.png)
+
+2. **Development Deployment**
+
+- The pipeline automatically deploys the new version to the **development environment** for testing whenever changes are pushed to the `dev` branch.
+
+  ![pipeline-dev](resources/pipeline-dev.png)
+
+3. **Merge & Trigger Production Pipeline**
+
+- Once the changes in the `dev` branch are tested and approved, they are merged into the `main` branch.
+- **AWS CodePipeline for production** is configured to **only trigger when there is a new commit in the `main` branch**.
+
+  ![pipeline-prod](resources/pipeline-prod.png)
+
+4. **Approval & Production Deployment**
+
+- A manual approval step (e.g., via SNS) ensures only validated changes reach production.
+- Once approved, the deployment proceeds to the production environment.
+
+  ![sns-approve](resources/sns-approve.png)
+
+---
+
+## 🎉 Deployment Results
+
+### 🛠 Dev Environment
+
+- Changes pushed to the `dev` branch are automatically deployed to the **development environment**.
+- This environment is used for testing and validating new features before they are merged into `main`.
+- Developers can access the latest build to verify functionality, debug issues, and ensure stability.
+
+  ![dev](resources/dev.png)
+
+### ⚡ Before Merge
+
+- The production environment before the latest update.
+- This represents the last stable version running before new changes are deployed.
+
+  ![prod-before](resources/prod-before.png)
+
+### ✨ After Merge
+
+- The production environment after the latest deployment.
+- The newly merged and approved changes are now live.
+
+  ![prod-after](resources/prod-after.png)
+
+---
+
+## 📡 Monitoring
+
+### <img src="https://i.imgur.com/rAsQAY5.png" width="30" height="30" /> **CloudWatch**
+
+- **Monitoring & Logging**: Collects and stores logs from ECS containers for application tracking.
+- **Log Insights**: Enables querying logs for error analysis and performance monitoring.
+- **Alarms & Alerts**: Triggers alerts based on application errors or resource overuse.
+
+  - **Logs**  
+    ![log-cloudwatch](resources/log-cloudwatch.png)
+
+  - **Alarms**  
+    ![alarm-cloudwatch](resources/alarm-cloudwatch.png)
