@@ -31,12 +31,15 @@
 
 ![alb](resources/alb.png)
 
-- <img src="https://i.imgur.com/jFcQvRW.png" width="30" height="30" /> **Web Application Firewall (WAF)**: Protects against common security threats, including SQL Injection (SQLi) and Cross-Site Scripting (XSS).
+- <img src="https://i.imgur.com/jFcQvRW.png" width="30" height="30" /> **Web Application Firewall (WAF)** & <img src="https://i.imgur.com/XUEjtQR.png" width="30" height="30" /> **Amazon CloudFront**:
 
-  - DEV
-    ![waf-dev](resources/waf-dev.png)
-  - PROD
-    ![waf-prod](resources/waf-prod.png)
+  - **WAF** protects against common security threats, including SQL Injection (SQLi) and Cross-Site Scripting (XSS).
+  - **CloudFront** serves cached content globally for improved performance and security.
+
+    - WAF
+      ![waf](resources/waf.png)
+    - CLOUDFRONT
+      ![cloudfront](resources/cloudfront.png)
 
 - <img src="https://i.imgur.com/CHzMALx.png" width="30" height="30" /> **Amazon Route 53**: Routes domain traffic to the appropriate endpoints.
 
@@ -50,7 +53,7 @@
 
 ### 🚀 Container Orchestration
 
-- <img src="https://i.imgur.com/SWw2HAB.png" width="30" height="30" /> **Elastic Container Service (ACM)**: A fully managed container orchestration service that simplifies the deployment, scaling, and management of containerized applications.
+- <img src="https://i.imgur.com/SWw2HAB.png" width="30" height="30" /> **Elastic Container Service (ECS)**: A fully managed container orchestration service that simplifies the deployment, scaling, and management of containerized applications.
 - <img src="https://i.imgur.com/WZPqH1T.png" width="30" height="30" /> **Serverless Compute Engine (Fargate)**: Eliminates the need for server provisioning, allowing automatic scaling and resource optimization.
 
   - DEV
